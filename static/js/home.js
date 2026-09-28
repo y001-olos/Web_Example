@@ -1,5 +1,6 @@
 // =========================================================
 // Filmory 홈페이지 전용 JavaScript
+// 로그인 상태에 따라 홈 화면을 변경합니다.
 // =========================================================
 
 function onAuthReady() {
@@ -13,20 +14,21 @@ function onAuthReady() {
   }
 
   if (currentUser) {
+    // 로그인한 사용자에게는 로그인 입력창을 숨깁니다.
     loginBox.hidden = true;
     welcomeBox.hidden = false;
 
     if (hello) {
       const email = currentUser.email || "사용자";
+
       const nickname = email.includes("@")
         ? email.split("@")[0]
         : email;
 
       hello.textContent = nickname + "님, 안녕하세요!";
     }
-
-    moveToReturnPath();
   } else {
+    // 로그인하지 않은 사용자에게는 로그인 입력창을 보여줍니다.
     loginBox.hidden = false;
     welcomeBox.hidden = true;
 
@@ -44,7 +46,7 @@ function prepareLoginForm() {
     return;
   }
 
-  // 인증 상태가 다시 확인되더라도 이벤트가 중복 등록되지 않게 합니다.
+  // 인증 상태가 다시 확인되어도 이벤트가 중복 등록되지 않게 합니다.
   if (passwordInput.dataset.enterReady === "true") {
     return;
   }
@@ -57,25 +59,4 @@ function prepareLoginForm() {
       signIn();
     }
   });
-}
-
-/**
- * 로그인 필수 페이지에서 홈으로 이동된 사용자라면
- * 로그인 후 원래 방문하려던 페이지로 돌아갑니다.
- */
-function moveToReturnPath() {
-  const returnPath = sessionStorage.getItem("filmoryReturnPath");
-
-  if (!returnPath) {
-    return;
-  }
-
-  sessionStorage.removeItem("filmoryReturnPath");
-
-  if (
-    returnPath.startsWith("/") &&
-    !returnPath.startsWith("//")
-  ) {
-    location.href = returnPath;
-  }
 }

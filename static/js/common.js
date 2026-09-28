@@ -11,7 +11,7 @@
 // 이 두 값은 Filmory에서도 계속 사용합니다.
 const SUPABASE_URL = "https://yoplvefionximusjddsm.supabase.co";
 const SUPABASE_KEY =
-  "sb_publishable_soOppa2ForNkw5TCBi9pKw_Kh5KLTBK";
+"sb_publishable_soOppa2ForNkw5TCBi9pKw_Kh5KLTBK";
 
 // Supabase 클라이언트를 생성합니다.
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -54,49 +54,59 @@ function renderNav() {
   }
 
   const currentPath = location.pathname;
+  nav.replaceChildren();
 
-  const menuLinks = MENU.map(function (menu) {
+  const brand = document.createElement("div");
+  brand.className = "brand";
+
+  const brandLink = document.createElement("a");
+  brandLink.href = "/index.html";
+  brandLink.textContent = "Filmory";
+  brand.appendChild(brandLink);
+
+  const menuNav = document.createElement("nav");
+  menuNav.className = "menu";
+  menuNav.setAttribute("aria-label", "주요 메뉴");
+
+  MENU.forEach(function (menu) {
     const isHome =
       menu.url === "/index.html" &&
       (currentPath === "/" || currentPath === "/index.html");
 
-    const isCurrentPage = currentPath === menu.url || isHome;
-    const activeClass = isCurrentPage ? ' class="on"' : "";
+    const link = document.createElement("a");
+    link.href = menu.url;
+    link.textContent = menu.name;
 
-    return (
-      '' +
-      menu.url +
-      '" +
-      escapeHTML(menu.name) +
-      "</a>"
-    );
-  }).join("");
+    if (currentPath === menu.url || isHome) {
+      link.classList.add("on");
+      link.setAttribute("aria-current", "page");
+    }
 
-  let userArea;
+    menuNav.appendChild(link);
+  });
+
+  const userArea = document.createElement("div");
+  userArea.className = "me";
 
   if (currentUser) {
-    const email = escapeHTML(currentUser.email || "사용자");
+    const email = document.createElement("span");
+    email.className = "user-email";
+    email.textContent = currentUser.email || "사용자";
 
-    userArea =
-      '<span class="user-email">' +
-      email +
-      "</span>" +
-      '<button type="button" onclick="signOut()">로그아웃</button>';
+    const logoutButton = document.createElement("button");
+    logoutButton.type = "button";
+    logoutButton.textContent = "로그아웃";
+    logoutButton.addEventListener("click", signOut);
+
+    userArea.append(email, logoutButton);
   } else {
-    userArea =
-      '/index.html#loginBox로그인</a>';
+    const loginLink = document.createElement("a");
+    loginLink.href = "/index.html#loginBox";
+    loginLink.textContent = "로그인";
+    userArea.appendChild(loginLink);
   }
 
-  nav.innerHTML =
-    '<div class="brand">' +
-    '/index.htmlFilmory</a>' +
-    "</div>" +
-    '<nav class="menu" aria-label="주요 메뉴">' +
-    menuLinks +
-    "</nav>" +
-    '<div class="me">' +
-    userArea +
-    "</div>";
+  nav.append(brand, menuNav, userArea);
 }
 
 // ---------------------------------------------------------
