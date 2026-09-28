@@ -1,1 +1,14 @@
-/실습과정_전체.md
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Vercel
+.vercel
+
+# Dependencies
+node_modules
+
+# OS/editor
+.DS_Store
+Thumbs.db
