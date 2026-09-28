@@ -4,10 +4,62 @@
 <link rel="stylesheet" href="/static/css/style.css"></head><body>
 <header id="nav"></header>
 <main class="home-main">
-<section class="hero"><div class="hero-copy"><span class="eyebrow">YOUR PERSONAL CINEMA ARCHIVE</span><h1>영화를 발견하고,<br><em>기억을 기록하세요.</em></h1><p>제목으로 영화를 찾고, 지금의 기분으로 추천받고, 나만의 리뷰를 차곡차곡 저장하세요.</p><div class="actions"><a class="btn primary" href="/pages/search.html">영화 검색</a><a class="btn ghost" href="/pages/recommend.html">AI 추천</a></div></div><div class="hero-art" aria-hidden="true"><div class="film-card one"></div><div class="film-card two"></div><div class="film-card three"></div><span class="hero-mark">F</span></div></section>
-<section class="feature-strip"><article><span>01</span><h2>Search</h2><p>포스터, 줄거리, 장르와 평점을 한눈에 확인합니다.</p></article><article><span>02</span><h2>Discover</h2><p>분위기와 소재를 입력하면 AI가 영화를 제안합니다.</p></article><article><span>03</span><h2>Remember</h2><p>별점과 감상을 계정에 안전하게 보관합니다.</p></article></section>
-<section id="loginBox" class="auth-panel"><div><span class="eyebrow">MEMBERSHIP</span><h2>나만의 영화 서재를 시작하세요.</h2><p>로그인하면 리뷰 작성과 개인 기록 기능을 사용할 수 있습니다.</p></div><form onsubmit="return false"><label>이메일<input id="email" type="email" autocomplete="email" placeholder="you@example.com"></label><label>비밀번호<input id="password" type="password" autocomplete="current-password" minlength="6" placeholder="6자 이상"></label><div class="actions"><button class="btn primary" data-auth-button onclick="signIn()">로그인</button><button class="btn ghost" data-auth-button onclick="signUp()">회원가입</button></div></form></section>
-<section id="welcomeBox" class="auth-panel" hidden><div><span class="eyebrow">WELCOME BACK</span><h2 id="hello">안녕하세요.</h2><p>오늘의 영화를 발견하고 새로운 기록을 남겨보세요.</p></div><div class="actions"><a class="btn primary" href="/pages/search.html">영화 찾기</a><a class="btn ghost" href="/pages/mypage.html">내 기록</a></div></section>
-<section class="credits"><p>Filmory는 비상업적 교육용 프로젝트입니다.</p><p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p></section>
-</main><footer>© 2026 Filmory</footer> 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/static/js/common.js"></script><script src="/static/js/home.js"></script></body></html>
+<section class="hero">
+    <div class="hero-copy">
+        <span class="eyebrow">YOUR PERSONAL CINEMA ARCHIVE</span>
+        <h1>영화를 발견하고,<br><em>기억을 기록하세요.</em></h1>
+        <p>제목으로 영화를 찾고, 지금의 기분으로 추천받고, 나만의 리뷰를 차곡차곡 저장하세요.</p>
+        <div class="actions">
+            <a class="btn primary" href="/pages/search.html">영화 검색</a>
+            <a class="btn ghost" href="/pages/recommend.html">AI 추천</a>
+        </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+        <div class="film-card one"></div>
+        <div class="film-card two"></div>
+        <div class="film-card three"></div>
+        <span class="hero-mark">F</span>
+    </div>
+</section>
+<section class="feature-strip">
+    <article><span>01</span><h2>Search</h2><p>포스터, 줄거리, 장르와 평점을 한눈에 확인합니다.</p></article>
+    <article><span>02</span><h2>Discover</h2><p>분위기와 소재를 입력하면 AI가 영화를 제안합니다.</p></article>
+    <article><span>03</span><h2>Remember</h2><p>별점과 감상을 계정에 안전하게 보관합니다.</p></article>
+</section>
+<section id="loginBox" class="auth-panel">
+    <div>
+    <span class="eyebrow">MEMBERSHIP</span>
+    <h2>나만의 영화 서재를 시작하세요.</h2>
+    <p>로그인하면 리뷰 작성과 개인 기록 기능을 사용할 수 있습니다.</p>
+</div>
+<form onsubmit="return false">
+    <label>이메일<input id="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label>비밀번호<input id="password" type="password" autocomplete="current-password" minlength="6" placeholder="6자 이상"></label>
+    <div class="actions">
+        <button class="btn primary" data-auth-button onclick="signIn()">로그인</button>
+        <button class="btn ghost" data-auth-button onclick="signUp()">회원가입</button>
+    </div>
+</form>
+</section>
+<section id="welcomeBox" class="auth-panel" hidden>
+    <div>
+        <span class="eyebrow">WELCOME BACK</span>
+        <h2 id="hello">안녕하세요.</h2>
+        <p>오늘의 영화를 발견하고 새로운 기록을 남겨보세요.</p>
+    </div>
+    <div class="actions">
+        <a class="btn primary" href="/pages/search.html">영화 찾기</a>
+        <a class="btn ghost" href="/pages/mypage.html">내 기록</a>
+    </div>
+</section>
+<section class="credits">
+    <p>Filmory는 비상업적 교육용 프로젝트입니다.</p>
+    <p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+</section>
+</main>
+<footer>© 2026 Filmory</footer> 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/home.js"></script>
+</body>
+</html>
