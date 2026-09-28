@@ -13,5 +13,5 @@ const askAI=prompt=>api("/api/ai",{method:"POST",headers:{"Content-Type":"applic
 const movieAPI=params=>api("/api/movies?"+new URLSearchParams(params));
 const poster=(p,size="w500")=>p?`https://image.tmdb.org/t/p/${size}${p}`:"/assets/poster-placeholder.svg";
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-const year=d=>d?String(d).slice(0,4):"연도 미상";const message=e=>e?.message||"오류가 발생했습니다.";
+const year=d=>d?String(d).slice(0,4):"연도 미상";const message=e=>e?.message||"오류가 발생했습니다."; 
 function movieCard(m,reason=""){return `<article class="movie-card"><img src="${poster(m.poster_path)}" alt="${esc(m.title)} 포스터" loading="lazy"><div class="movie-body"><span class="movie-meta">${year(m.release_date)} · ★ ${Number(m.vote_average||0).toFixed(1)}</span><h2>${esc(m.title)}</h2>${reason?`<p class="reason">${esc(reason)}</p>`:`<p>${esc(m.overview||"줄거리 정보가 없습니다.")}</p>`}<a class="card-link" href="/pages/review.html?movieId=${m.id}">리뷰 작성</a></div></article>`}
