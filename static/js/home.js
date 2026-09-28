@@ -1,1 +1,3 @@
-function onAuthReady(){const l=document.querySelector("#loginBox"),w=document.querySelector("#welcomeBox");l.hidden=!!currentUser;w.hidden=!currentUser;if(currentUser){document.querySelector("#hello").textContent=(currentUser.email?.split("@")[0]||"사용자")+"님, 다시 만나 반가워요."}document.querySelector("#password")?.addEventListener("keydown",e=>{if(e.key==="Enter")signIn()},{once:true})}
+function onAuthReady()
+    {const l=document.querySelector("#loginBox"),w=document.querySelector("#welcomeBox");l.hidden=!!currentUser;w.hidden=!currentUser;if(currentUser){document.querySelector("#hello").textContent=(currentUser.email?.split("@")[0]||"사용자")+"님, 다시 만나 반가워요."}
+    document.querySelector("#password")?.addEventListener("keydown",e=>{if(e.key==="Enter")signIn()},{once:true})}
