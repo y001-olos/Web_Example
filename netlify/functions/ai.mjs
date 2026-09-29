@@ -10,12 +10,12 @@ export default async function handler(request) {
     );
   }
 
-  const apiKey = Netlify.env.get("GROQ_API_TEST");
+  const apiKey = Netlify.env.get("GROQ_API_KEY");
 
   if (!apiKey) {
     return Response.json(
       {
-        error: "GROQ_API_TEST 환경 변수가 설정되지 않았습니다.",
+        error: "GROQ_API_KEY 환경 변수가 설정되지 않았습니다.",
       },
       {
         status: 500,
