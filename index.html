@@ -1,65 +1,400 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="AI 영화 추천과 개인 영화 기록 서비스 Filmory"><title>Filmory | 영화의 발견부터 감상의 기록까지</title>
-<link rel="stylesheet" href="/static/css/style.css"></head><body>
-<header id="nav"></header>
-<main class="home-main">
-<section class="hero">
-    <div class="hero-copy">
-        <span class="eyebrow">YOUR PERSONAL CINEMA ARCHIVE</span>
-        <h1>영화를 발견하고,<br><em>기억을 기록하세요.</em></h1>
-        <p>제목으로 영화를 찾고, 지금의 기분으로 추천받고, 나만의 리뷰를 차곡차곡 저장하세요.</p>
+
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="AI 영화 추천과 개인 영화 기록 서비스 Filmory"
+  >
+
+  <title>
+    Filmory | 영화의 발견부터 감상의 기록까지
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/static/css/style.css"
+  >
+</head>
+
+<body>
+  <header id="nav"></header>
+
+  <main class="home-main">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">
+          YOUR PERSONAL CINEMA ARCHIVE
+        </span>
+
+        <h1>
+          영화를 발견하고,<br>
+          <em>기억을 기록하세요.</em>
+        </h1>
+
+        <p>
+          제목으로 영화를 찾고, 지금의 기분으로 추천받고,
+          나만의 리뷰를 차곡차곡 저장하세요.
+        </p>
+
         <div class="actions">
-            <a class="btn primary" href="/pages/search.html">영화 검색</a>
-            <a class="btn ghost" href="/pages/recommend.html">AI 추천</a>
+          <a
+            class="btn primary"
+            href="/pages/search.html"
+          >
+            영화 검색
+          </a>
+
+          <a
+            class="btn ghost"
+            href="/pages/recommend.html"
+          >
+            AI 추천
+          </a>
         </div>
-    </div>
-    <div class="hero-art" aria-hidden="true">
+      </div>
+
+      <div
+        class="hero-art"
+        aria-hidden="true"
+      >
         <div class="film-card one"></div>
         <div class="film-card two"></div>
         <div class="film-card three"></div>
+
         <span class="hero-mark">F</span>
-    </div>
-</section>
-<section class="feature-strip">
-    <article><span>01</span><h2>Search</h2><p>포스터, 줄거리, 장르와 평점을 한눈에 확인합니다.</p></article>
-    <article><span>02</span><h2>Discover</h2><p>분위기와 소재를 입력하면 AI가 영화를 제안합니다.</p></article>
-    <article><span>03</span><h2>Remember</h2><p>별점과 감상을 계정에 안전하게 보관합니다.</p></article>
-</section>
-<section id="loginBox" class="auth-panel">
-    <div>
-    <span class="eyebrow">MEMBERSHIP</span>
-    <h2>나만의 영화 서재를 시작하세요.</h2>
-    <p>로그인하면 리뷰 작성과 개인 기록 기능을 사용할 수 있습니다.</p>
-</div>
-<form onsubmit="return false">
-    <label>이메일<input id="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
-    <label>비밀번호<input id="password" type="password" autocomplete="current-password" minlength="6" placeholder="6자 이상"></label>
-    <div class="actions">
-        <button class="btn primary" data-auth-button onclick="signIn()">로그인</button>
-        <button class="btn ghost" data-auth-button onclick="signUp()">회원가입</button>
-    </div>
-</form>
-</section>
-<section id="welcomeBox" class="auth-panel" hidden>
-    <div>
-        <span class="eyebrow">WELCOME BACK</span>
-        <h2 id="hello">안녕하세요.</h2>
-        <p>오늘의 영화를 발견하고 새로운 기록을 남겨보세요.</p>
-    </div>
-    <div class="actions">
-        <a class="btn primary" href="/pages/search.html">영화 찾기</a>
-        <a class="btn ghost" href="/pages/mypage.html">내 기록</a>
-    </div>
-</section>
-<section class="credits">
-    <p>Filmory는 비상업적 교육용 프로젝트입니다.</p>
-    <p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
-</section>
-</main>
-<footer>© 2026 Filmory</footer> 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/static/js/common.js"></script>
-<script src="/static/js/home.js"></script>
+      </div>
+    </section>
+
+    <section class="feature-strip">
+      <article>
+        <span>01</span>
+        <h2>Search</h2>
+
+        <p>
+          포스터, 줄거리, 장르와 평점을 한눈에 확인합니다.
+        </p>
+      </article>
+
+      <article>
+        <span>02</span>
+        <h2>Discover</h2>
+
+        <p>
+          분위기와 소재를 입력하면 AI가 영화를 제안합니다.
+        </p>
+      </article>
+
+      <article>
+        <span>03</span>
+        <h2>Remember</h2>
+
+        <p>
+          별점과 감상을 계정에 안전하게 보관합니다.
+        </p>
+      </article>
+    </section>
+
+    <!-- 로그인 또는 회원가입 영역 -->
+    <section
+      id="authBox"
+      class="auth-panel improved-auth-panel"
+    >
+      <div class="auth-introduction">
+        <span class="eyebrow">
+          PRIVATE FILM DIARY
+        </span>
+
+        <h2>
+          나만의 영화 서재를<br>
+          시작하세요.
+        </h2>
+
+        <p>
+          계정을 만들고 이메일 인증을 완료하면
+          별점과 리뷰를 안전하게 저장할 수 있습니다.
+        </p>
+
+        <ol class="auth-guide">
+          <li>
+            <span>01</span>
+            아이디와 이메일로 회원가입
+          </li>
+
+          <li>
+            <span>02</span>
+            받은 편지함에서 이메일 인증
+          </li>
+
+          <li>
+            <span>03</span>
+            인증된 계정으로 로그인
+          </li>
+        </ol>
+      </div>
+
+      <div class="auth-box">
+        <div
+          class="auth-tabs"
+          role="tablist"
+          aria-label="계정 메뉴"
+        >
+          <button
+            id="loginTab"
+            class="auth-tab active"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="loginPanel"
+          >
+            로그인
+          </button>
+
+          <button
+            id="signupTab"
+            class="auth-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="signupPanel"
+          >
+            회원가입
+          </button>
+        </div>
+
+        <!-- 로그인 화면 -->
+        <section
+          id="loginPanel"
+          class="auth-form-panel"
+          role="tabpanel"
+          aria-labelledby="loginTab"
+        >
+          <h2>다시 만나 반가워요.</h2>
+
+          <p class="auth-description">
+            이메일 인증을 완료한 계정으로 로그인하세요.
+          </p>
+
+          <form
+            id="loginForm"
+            onsubmit="return false;"
+          >
+            <label for="loginEmail">
+              이메일
+            </label>
+
+            <input
+              id="loginEmail"
+              type="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              required
+            >
+
+            <label for="loginPassword">
+              비밀번호
+            </label>
+
+            <input
+              id="loginPassword"
+              type="password"
+              autocomplete="current-password"
+              minlength="6"
+              placeholder="6자 이상"
+              required
+            >
+
+            <button
+              id="loginButton"
+              class="btn primary auth-submit"
+              type="submit"
+              data-auth-button
+            >
+              로그인
+            </button>
+          </form>
+
+          <div
+            id="loginMessage"
+            class="auth-message"
+            aria-live="polite"
+            hidden
+          ></div>
+
+          <button
+            id="resendButton"
+            class="text-button"
+            type="button"
+            hidden
+          >
+            인증 메일 다시 보내기
+          </button>
+        </section>
+
+        <!-- 회원가입 화면 -->
+        <section
+          id="signupPanel"
+          class="auth-form-panel"
+          role="tabpanel"
+          aria-labelledby="signupTab"
+          hidden
+        >
+          <h2>Filmory 계정 만들기</h2>
+
+          <p class="auth-description">
+            아이디는 Filmory에서 표시되는 나만의 이름입니다.
+          </p>
+
+          <form
+            id="signupForm"
+            onsubmit="return false;"
+          >
+            <label for="signupUsername">
+              아이디
+            </label>
+
+            <input
+              id="signupUsername"
+              type="text"
+              autocomplete="username"
+              minlength="3"
+              maxlength="20"
+              placeholder="영문 소문자, 숫자, 밑줄 3~20자"
+              required
+            >
+
+            <div
+              id="usernameMessage"
+              class="field-message"
+              aria-live="polite"
+            ></div>
+
+            <label for="signupEmail">
+              이메일
+            </label>
+
+            <input
+              id="signupEmail"
+              type="email"
+              autocomplete="email"
+              placeholder="실제로 확인 가능한 이메일"
+              required
+            >
+
+            <label for="signupPassword">
+              비밀번호
+            </label>
+
+            <input
+              id="signupPassword"
+              type="password"
+              autocomplete="new-password"
+              minlength="6"
+              placeholder="6자 이상"
+              required
+            >
+
+            <label for="signupPasswordConfirm">
+              비밀번호 확인
+            </label>
+
+            <input
+              id="signupPasswordConfirm"
+              type="password"
+              autocomplete="new-password"
+              minlength="6"
+              placeholder="비밀번호를 다시 입력"
+              required
+            >
+
+            <button
+              id="signupButton"
+              class="btn primary auth-submit"
+              type="submit"
+              data-auth-button
+              disabled
+            >
+              회원가입
+            </button>
+          </form>
+
+          <div
+            id="signupMessage"
+            class="auth-message"
+            aria-live="polite"
+            hidden
+          ></div>
+
+          <p class="auth-help">
+            회원가입 후 받은 편지함의 인증 링크를 눌러야
+            로그인을 사용할 수 있습니다.
+          </p>
+        </section>
+      </div>
+    </section>
+
+    <!-- 로그인 완료 화면 -->
+    <section
+      id="welcomeBox"
+      class="auth-panel welcome-panel"
+      hidden
+    >
+      <div>
+        <span class="eyebrow">
+          WELCOME BACK
+        </span>
+
+        <h2 id="hello">
+          다시 만나 반가워요.
+        </h2>
+
+        <p>
+          오늘의 영화를 발견하고 새로운 기록을 남겨보세요.
+        </p>
+      </div>
+
+      <div class="actions">
+        <a
+          class="btn primary"
+          href="/pages/search.html"
+        >
+          영화 찾기
+        </a>
+
+        <a
+          class="btn ghost"
+          href="/pages/mypage.html"
+        >
+          내 기록
+        </a>
+      </div>
+    </section>
+
+    <section class="credits">
+      <p>
+        Filmory는 비상업적 교육용 프로젝트입니다.
+      </p>
+
+      <p>
+        This product uses the TMDB API but is not endorsed or
+        certified by TMDB.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 Filmory
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/static/js/common.js"></script>
+  <script src="/static/js/home.js"></script>
 </body>
 </html>
