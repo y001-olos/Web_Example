@@ -515,30 +515,29 @@ function movieCard(movie, reason = "") {
 
   return `
     <article class="movie-card">
-      <img
-        src="${posterURL}"
-        alt="${movieTitle} 포스터"
-        loading="lazy"
-      >
-
-      <div class="movie-body">
-        <span class="movie-meta">
-          ${releaseYear} · ★ ${rating}
-        </span>
-
-        <h2>${movieTitle}</h2>
-
-        <p class="${descriptionClass}">
-          ${description}
-        </p>
-
-        <a
-          class="card-link"
-          href="/pages/review.html?movieId=${movieId}"
+      /pages/movie.html?movieId=${movieId}
+        <img
+          src="${posterURL}"
+          alt="${movieTitle} 포스터"
+          loading="lazy"
         >
-          리뷰 작성
-        </a>
-      </div>
+
+        <div class="movie-body">
+          <span class="movie-meta">
+            ${releaseYear} · ★ ${rating}
+          </span>
+
+          <h2>${movieTitle}</h2>
+
+          <p class="${descriptionClass}">
+            ${description}
+          </p>
+
+          <span class="card-link">
+            상세 정보 보기 →
+          </span>
+        </div>
+      </a>
     </article>
   `;
 }
