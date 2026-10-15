@@ -10,12 +10,27 @@ export default async function handler(request) {
     );
   }
 
-  const apiKey = Netlify.env.get("GROQ_API_KEY");
+  const netlifyApiKey =
+    globalThis.Netlify?.env?.get?.(
+      "GEMINI_API_KEY"
+    );
+
+  const processApiKey =
+    typeof process !== "undefined"
+      ? process.env?.GEMINI_API_KEY
+      : "";
+
+  const apiKey = String(
+    netlifyApiKey ||
+    processApiKey ||
+    ""
+  ).trim();
 
   if (!apiKey) {
     return Response.json(
       {
-        error: "GROQ_API_KEY 환경 변수가 설정되지 않았습니다.",
+        error:
+          "Netlify에 GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.",
       },
       {
         status: 500,
@@ -26,11 +41,13 @@ export default async function handler(request) {
   let requestBody;
 
   try {
-    requestBody = await request.json();
+    requestBody =
+      await request.json();
   } catch {
     return Response.json(
       {
-        error: "요청 본문이 올바른 JSON 형식이 아닙니다.",
+        error:
+          "요청 데이터가 올바른 JSON 형식이 아닙니다.",
       },
       {
         status: 400,
@@ -39,14 +56,16 @@ export default async function handler(request) {
   }
 
   const prompt =
-    typeof requestBody.prompt === "string"
+    typeof requestBody.prompt ===
+    "string"
       ? requestBody.prompt.trim()
       : "";
 
   if (!prompt) {
     return Response.json(
       {
-        error: "AI에게 전달할 내용을 입력해 주세요.",
+        error:
+          "AI에게 전달할 내용을 입력해 주세요.",
       },
       {
         status: 400,
@@ -57,7 +76,8 @@ export default async function handler(request) {
   if (prompt.length > 12000) {
     return Response.json(
       {
-        error: "AI 요청 내용이 너무 깁니다.",
+        error:
+          "AI 요청 내용이 너무 깁니다.",
       },
       {
         status: 400,
@@ -65,58 +85,144 @@ export default async function handler(request) {
     );
   }
 
+  const model =
+    "gemini-2.5-flash";
+
+  const endpoint =
+    "https://generativelanguage.googleapis.com/" +
+    "v1beta/models/" +
+    model +
+    ":generateContent";
+
   try {
-    const groqResponse = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
+    const geminiResponse =
+      await fetch(endpoint, {
         method: "POST",
 
         headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
+          "Content-Type":
+            "application/json",
+
+          "x-goog-api-key":
+            apiKey,
         },
 
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
-          temperature: 0.7,
+          systemInstruction: {
+            parts: [
+              {
+                text:
+                  "You are Filmory, a careful Korean movie assistant. " +
+                  "Respond in Korean unless another language is explicitly requested. " +
+                  "Only recommend real released movies. " +
+                  "Never invent movie titles. " +
+                  "Follow the user's requested output format exactly.",
+              },
+            ],
+          },
 
-          messages: [
-            {
-              role: "system",
-              content:
-                "You are Filmory, a careful Korean movie assistant. " +
-                "Follow the requested output format exactly.",
-            },
+          contents: [
             {
               role: "user",
-              content: prompt,
+
+              parts: [
+                {
+                  text: prompt,
+                },
+              ],
             },
           ],
+
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 4096,
+          },
         }),
+      });
+
+    const data =
+      await geminiResponse.json();
+
+    if (!geminiResponse.ok) {
+      console.error(
+        "Gemini API 오류:",
+        geminiResponse.status,
+        data
+      );
+
+      let errorMessage =
+        data.error?.message ||
+        "Gemini API 요청을 처리하지 못했습니다.";
+
+      if (
+        geminiResponse.status === 400
+      ) {
+        errorMessage =
+          "Gemini 요청 형식 또는 API 키 설정을 확인해 주세요. " +
+          errorMessage;
       }
-    );
 
-    const data = await groqResponse.json();
+      if (
+        geminiResponse.status === 401 ||
+        geminiResponse.status === 403
+      ) {
+        errorMessage =
+          "Gemini API 키가 유효하지 않거나 사용 권한이 없습니다. " +
+          "Netlify의 GEMINI_API_KEY 값을 확인해 주세요.";
+      }
 
-    if (!groqResponse.ok) {
+      if (
+        geminiResponse.status === 429
+      ) {
+        errorMessage =
+          "Gemini API 사용 한도를 초과했습니다. 잠시 후 다시 시도해 주세요.";
+      }
+
       return Response.json(
         {
-          error:
-            data.error?.message ||
-            "Groq API 요청을 처리하지 못했습니다.",
+          error: errorMessage,
         },
         {
-          status: groqResponse.status,
+          status:
+            geminiResponse.status,
         }
       );
     }
 
-    const text = data.choices?.[0]?.message?.content;
+    const candidate =
+      data.candidates?.[0];
+
+    const text =
+      candidate?.content?.parts
+        ?.map(function (part) {
+          return part.text || "";
+        })
+        .join("")
+        .trim();
 
     if (!text) {
+      const blockReason =
+        data.promptFeedback
+          ?.blockReason;
+
+      const finishReason =
+        candidate?.finishReason;
+
+      console.error(
+        "Gemini 응답에 텍스트 없음:",
+        data
+      );
+
       return Response.json(
         {
-          error: "Groq API 응답에서 결과를 찾지 못했습니다.",
+          error:
+            blockReason
+              ? "Gemini가 요청을 차단했습니다: " +
+                blockReason
+              : finishReason
+                ? "Gemini가 응답 생성을 완료하지 못했습니다: " +
+                  finishReason
+                : "Gemini 응답에서 결과를 찾지 못했습니다.",
         },
         {
           status: 502,
@@ -125,14 +231,18 @@ export default async function handler(request) {
     }
 
     return Response.json({
-      text: text.trim(),
+      text: text,
     });
   } catch (error) {
-    console.error("Groq 요청 실패:", error);
+    console.error(
+      "Gemini 요청 실패:",
+      error
+    );
 
     return Response.json(
       {
-        error: "AI 서버 처리 중 오류가 발생했습니다.",
+        error:
+          "AI 서버 처리 중 오류가 발생했습니다.",
       },
       {
         status: 500,
