@@ -483,48 +483,59 @@ const message = function (error) {
   );
 };
 
-function movieCard(
-  movie,
-  reason = ""
-) {
+function movieCard(movie, reason = "") {
+  const movieId = Number(movie.id);
+
+  const movieTitle = esc(
+    movie.title || "제목 정보 없음"
+  );
+
+  const posterURL = poster(
+    movie.poster_path
+  );
+
+  const releaseYear = year(
+    movie.release_date
+  );
+
+  const rating = Number(
+    movie.vote_average || 0
+  ).toFixed(1);
+
+  const description = reason
+    ? esc(reason)
+    : esc(
+        movie.overview ||
+        "줄거리 정보가 없습니다."
+      );
+
+  const descriptionClass = reason
+    ? "reason"
+    : "";
+
   return `
     <article class="movie-card">
-      "
-        alt="${esc(movie.title)} 포스터"
+      <img
+        src="${posterURL}"
+        alt="${movieTitle} 포스터"
         loading="lazy"
       >
 
       <div class="movie-body">
         <span class="movie-meta">
-          ${year(movie.release_date)}
-          ·
-          ★ ${Number(
-            movie.vote_average || 0
-          ).toFixed(1)}
+          ${releaseYear} · ★ ${rating}
         </span>
 
-        <h2>
-          ${esc(movie.title)}
-        </h2>
+        <h2>${movieTitle}</h2>
 
-        ${
-          reason
-            ? `
-              <p class="reason">
-                ${esc(reason)}
-              </p>
-            `
-            : `
-              <p>
-                ${esc(
-                  movie.overview ||
-                  "줄거리 정보가 없습니다."
-                )}
-              </p>
-            `
-        }
+        <p class="${descriptionClass}">
+          ${description}
+        </p>
 
-        /pages/review.html?movieId=${movie.id}
+        <a
+          class="card-link"
+          href="/pages/review.html?movieId=${movieId}"
+        >
           리뷰 작성
         </a>
       </div>
