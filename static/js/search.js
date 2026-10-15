@@ -1,23 +1,23 @@
+let searchPageInitialized = false;
+
 function onAuthReady() {
+  if (searchPageInitialized) {
+    return;
+  }
+
+  searchPageInitialized = true;
+
   const searchForm =
-    document.getElementById(
-      "searchForm"
-    );
+    document.getElementById("searchForm");
 
   const searchInput =
-    document.getElementById(
-      "query"
-    );
+    document.getElementById("query");
 
   const status =
-    document.getElementById(
-      "status"
-    );
+    document.getElementById("status");
 
   const results =
-    document.getElementById(
-      "results"
-    );
+    document.getElementById("results");
 
   if (
     !searchForm ||
@@ -34,7 +34,7 @@ function onAuthReady() {
 
   searchForm.addEventListener(
     "submit",
-    async function (event) {
+    function (event) {
       event.preventDefault();
 
       const query =
@@ -45,11 +45,10 @@ function onAuthReady() {
           "검색할 영화 제목을 입력해 주세요.";
 
         searchInput.focus();
-
         return;
       }
 
-      await searchMovies(query);
+      searchMovies(query);
     }
   );
 
@@ -59,27 +58,22 @@ function onAuthReady() {
     ).get("q");
 
   if (initialQuery) {
-    searchInput.value =
-      initialQuery;
-
+    searchInput.value = initialQuery;
     searchMovies(initialQuery);
   }
 }
 
 async function searchMovies(query) {
   const status =
-    document.getElementById(
-      "status"
-    );
+    document.getElementById("status");
 
   const results =
-    document.getElementById(
-      "results"
-    );
+    document.getElementById("results");
 
   status.textContent =
     "영화를 찾는 중입니다...";
 
+  // 이전 검색 결과를 전부 삭제합니다.
   results.replaceChildren();
 
   try {
@@ -105,9 +99,7 @@ async function searchMovies(query) {
 
     movies.forEach(function (movie) {
       const card =
-        createMovieCardElement(
-          movie
-        );
+        createMovieCardElement(movie);
 
       results.appendChild(card);
     });
@@ -122,20 +114,11 @@ async function searchMovies(query) {
   }
 }
 
-/**
- * 클릭 가능한 영화 카드 요소를 생성합니다.
- */
 function createMovieCardElement(movie) {
-  const cardData =
-    movieCard(movie);
-
   const article =
-    document.createElement(
-      "article"
-    );
+    document.createElement("article");
 
-  article.className =
-    "movie-card";
+  article.className = "movie-card";
 
   const link =
     document.createElement("a");
@@ -145,24 +128,23 @@ function createMovieCardElement(movie) {
 
   link.href =
     "/pages/movie.html?movieId=" +
-    encodeURIComponent(
-      cardData.movieId
-    );
+    encodeURIComponent(movie.id);
 
   link.setAttribute(
     "aria-label",
-    cardData.movieTitle +
+    (movie.title || "영화") +
       " 상세 정보 보기"
   );
 
   const image =
     document.createElement("img");
 
-  image.src =
-    cardData.posterURL;
+  image.src = poster(
+    movie.poster_path
+  );
 
   image.alt =
-    cardData.movieTitle +
+    (movie.title || "영화") +
     " 포스터";
 
   image.loading = "lazy";
@@ -170,50 +152,45 @@ function createMovieCardElement(movie) {
   const body =
     document.createElement("div");
 
-  body.className =
-    "movie-body";
+  body.className = "movie-body";
 
   const meta =
     document.createElement("span");
 
-  meta.className =
-    "movie-meta";
+  meta.className = "movie-meta";
 
   meta.textContent =
-    cardData.releaseYear +
+    year(movie.release_date) +
     " · ★ " +
-    cardData.rating;
+    Number(
+      movie.vote_average || 0
+    ).toFixed(1);
 
   const title =
     document.createElement("h2");
 
   title.textContent =
-    cardData.movieTitle;
+    movie.title ||
+    "제목 정보 없음";
 
-  const description =
+  const overview =
     document.createElement("p");
 
-  if (cardData.hasReason) {
-    description.className =
-      "reason";
-  }
-
-  description.textContent =
-    cardData.description;
+  overview.textContent =
+    movie.overview ||
+    "줄거리 정보가 없습니다.";
 
   const action =
     document.createElement("span");
 
-  action.className =
-    "card-link";
-
+  action.className = "card-link";
   action.textContent =
     "상세 정보 보기 →";
 
   body.append(
     meta,
     title,
-    description,
+    overview,
     action
   );
 
