@@ -86,7 +86,8 @@ export default async function handler(request) {
   }
 
   const modelCandidates = [
-    "gemini-2.5-flash-lite",
+    "gemini-3.5-flash-lite",
+    "gemini-3.5-flash",
     "gemini-2.5-flash",
     "gemini-2.0-flash",
   ];
@@ -162,16 +163,23 @@ export default async function handler(request) {
           errorMessage,
         };
 
+        const normalizedError =
+          errorMessage.toLowerCase();
+
         const isModelUnavailable =
-          errorMessage.includes(
-            "no longer available to new users"
+          normalizedError.includes(
+            "no longer available"
           ) ||
-          errorMessage.includes(
+          normalizedError.includes(
             "not available to new users"
+          ) ||
+          normalizedError.includes(
+            "model not found"
           );
 
         if (
-          geminiResponse.status === 400 &&
+          (geminiResponse.status === 400 ||
+            geminiResponse.status === 404) &&
           isModelUnavailable
         ) {
           console.warn(
