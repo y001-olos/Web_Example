@@ -10,6 +10,7 @@ const db = supabase.createClient(
 );
 
 let currentUser = null;
+let currentProfile = null;
 
 const MENU = [
   ["홈", "/index.html"],
@@ -21,6 +22,34 @@ const MENU = [
 /**
  * 공통 메뉴를 표시합니다.
  */
+/**
+ * 현재 로그인한 사용자의 Filmory 프로필을 불러옵니다.
+ */
+async function loadCurrentProfile() {
+  currentProfile = null;
+
+  if (!currentUser) {
+    return;
+  }
+
+  const { data, error } = await db
+    .from("profiles")
+    .select("username")
+    .eq("id", currentUser.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error(
+      "프로필 조회 실패:",
+      error
+    );
+
+    return;
+  }
+
+  currentProfile = data;
+}
+
 function renderNav() {
   const nav = document.querySelector("#nav");
 
@@ -69,8 +98,9 @@ function renderNav() {
     const userName = document.createElement("span");
 
     userName.textContent =
+      currentProfile?.username ||
       currentUser.user_metadata?.username ||
-      currentUser.email ||
+      currentUser.email?.split("@")[0] ||
       "사용자";
 
     const logoutButton = document.createElement("button");
@@ -311,33 +341,37 @@ db.auth.onAuthStateChange(
     currentUser =
       session?.user || null;
 
-    ready.then(function () {
-      renderNav();
+    ready.then(
+      async function () {
+        await loadCurrentProfile();
 
-      if (
-        !currentUser &&
-        document.body.dataset
-          .requireAuth === "true"
-      ) {
-        sessionStorage.setItem(
-          "filmoryReturnPath",
-          location.pathname +
-            location.search
-        );
+        renderNav();
 
-        location.href =
-          "/index.html#authBox";
+        if (
+          !currentUser &&
+          document.body.dataset
+            .requireAuth === "true"
+        ) {
+          sessionStorage.setItem(
+            "filmoryReturnPath",
+            location.pathname +
+              location.search
+          );
 
-        return;
+          location.href =
+            "/index.html#authBox";
+
+          return;
+        }
+
+        if (
+          typeof onAuthReady ===
+          "function"
+        ) {
+          onAuthReady();
+        }
       }
-
-      if (
-        typeof onAuthReady ===
-        "function"
-      ) {
-        onAuthReady();
-      }
-    });
+    );
   }
 );
 

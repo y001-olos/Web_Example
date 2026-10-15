@@ -25,6 +25,7 @@ function onAuthReady() {
 
   if (currentUser) {
     const username =
+      currentProfile?.username ||
       currentUser.user_metadata
         ?.username;
 
