@@ -486,9 +486,8 @@ const message = function (error) {
 function movieCard(movie, reason = "") {
   const movieId = Number(movie.id);
 
-  const movieTitle = esc(
-    movie.title || "제목 정보 없음"
-  );
+  const movieTitle =
+    movie.title || "제목 정보 없음";
 
   const posterURL = poster(
     movie.poster_path
@@ -502,42 +501,18 @@ function movieCard(movie, reason = "") {
     movie.vote_average || 0
   ).toFixed(1);
 
-  const description = reason
-    ? esc(reason)
-    : esc(
-        movie.overview ||
-        "줄거리 정보가 없습니다."
-      );
+  const description =
+    reason ||
+    movie.overview ||
+    "줄거리 정보가 없습니다.";
 
-  const descriptionClass = reason
-    ? "reason"
-    : "";
-
-  return `
-    <article class="movie-card">
-      /pages/movie.html?movieId=${movieId}
-        <img
-          src="${posterURL}"
-          alt="${movieTitle} 포스터"
-          loading="lazy"
-        >
-
-        <div class="movie-body">
-          <span class="movie-meta">
-            ${releaseYear} · ★ ${rating}
-          </span>
-
-          <h2>${movieTitle}</h2>
-
-          <p class="${descriptionClass}">
-            ${description}
-          </p>
-
-          <span class="card-link">
-            상세 정보 보기 →
-          </span>
-        </div>
-      </a>
-    </article>
-  `;
+  return {
+    movieId,
+    movieTitle,
+    posterURL,
+    releaseYear,
+    rating,
+    description,
+    hasReason: Boolean(reason),
+  };
 }
