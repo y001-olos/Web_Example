@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="ko">
 <head>
   <meta charset="utf-8">
@@ -41,7 +40,6 @@
       영화 정보를 불러오는 중입니다...
     </div>
 
-    <!-- 영화 상세 정보 -->
     <section
       id="movieDetail"
       class="movie-detail"
@@ -107,6 +105,7 @@
           <dl class="movie-credit-list">
             <div>
               <dt>감독</dt>
+
               <dd id="detailDirector">
                 정보 없음
               </dd>
@@ -114,6 +113,7 @@
 
             <div>
               <dt>주요 출연진</dt>
+
               <dd id="detailCast">
                 정보 없음
               </dd>
@@ -135,14 +135,14 @@
 
           <a
             class="btn primary"
-            href="#">
+            href="#reviewSection"
+          >
             리뷰 작성하기
           </a>
         </div>
       </article>
     </section>
 
-    <!-- 리뷰 작성 영역 -->
     <section
       id="reviewSection"
       class="movie-review-section"
@@ -164,18 +164,19 @@
         </p>
       </div>
 
-      <!-- 비로그인 사용자 안내 -->
       <div
         id="reviewLoginNotice"
         class="review-login-notice"
         hidden
       >
         <div>
-          <h3>리뷰를 작성하려면 로그인이 필요합니다.</h3>
+          <h3>
+            리뷰를 작성하려면 로그인이 필요합니다.
+          </h3>
 
           <p>
-            로그인한 뒤 다시 이 영화로 돌아와
-            별점과 감상을 기록할 수 있습니다.
+            로그인한 뒤 다시 이 영화로 돌아와 별점과 감상을
+            기록할 수 있습니다.
           </p>
         </div>
 
@@ -188,7 +189,6 @@
         </button>
       </div>
 
-      <!-- 로그인 사용자 리뷰 편집기 -->
       <article
         id="reviewEditor"
         class="review-editor movie-review-editor"
@@ -294,7 +294,6 @@
       </article>
     </section>
 
-    <!-- TMDB 출처 안내 -->
     <section class="movie-detail-credit">
       <p>
         영화 정보와 이미지는 TMDB API를 통해 제공됩니다.
@@ -313,6 +312,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/static/js/common.js"></script>
-  /static/js/movie.jsscript>
+  <script src="/static/js/movie.js"></script>
 </body>
 </html>

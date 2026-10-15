@@ -8,16 +8,24 @@ function onAuthReady() {
   searchPageInitialized = true;
 
   const searchForm =
-    document.getElementById("searchForm");
+    document.getElementById(
+      "searchForm"
+    );
 
   const searchInput =
-    document.getElementById("query");
+    document.getElementById(
+      "query"
+    );
 
   const status =
-    document.getElementById("status");
+    document.getElementById(
+      "status"
+    );
 
   const results =
-    document.getElementById("results");
+    document.getElementById(
+      "results"
+    );
 
   if (
     !searchForm ||
@@ -58,22 +66,27 @@ function onAuthReady() {
     ).get("q");
 
   if (initialQuery) {
-    searchInput.value = initialQuery;
+    searchInput.value =
+      initialQuery;
+
     searchMovies(initialQuery);
   }
 }
 
 async function searchMovies(query) {
   const status =
-    document.getElementById("status");
+    document.getElementById(
+      "status"
+    );
 
   const results =
-    document.getElementById("results");
+    document.getElementById(
+      "results"
+    );
 
   status.textContent =
     "영화를 찾는 중입니다...";
 
-  // 이전 검색 결과를 전부 삭제합니다.
   results.replaceChildren();
 
   try {
@@ -99,7 +112,9 @@ async function searchMovies(query) {
 
     movies.forEach(function (movie) {
       const card =
-        createMovieCardElement(movie);
+        createMovieCardElement(
+          movie
+        );
 
       results.appendChild(card);
     });
@@ -115,10 +130,20 @@ async function searchMovies(query) {
 }
 
 function createMovieCardElement(movie) {
-  const article =
-    document.createElement("article");
+  const movieId =
+    Number(movie.id);
 
-  article.className = "movie-card";
+  const movieTitle =
+    movie.title ||
+    "제목 정보 없음";
+
+  const article =
+    document.createElement(
+      "article"
+    );
+
+  article.className =
+    "movie-card";
 
   const link =
     document.createElement("a");
@@ -128,36 +153,36 @@ function createMovieCardElement(movie) {
 
   link.href =
     "/pages/movie.html?movieId=" +
-    encodeURIComponent(movie.id);
+    encodeURIComponent(movieId);
 
   link.setAttribute(
     "aria-label",
-    (movie.title || "영화") +
+    movieTitle +
       " 상세 정보 보기"
   );
 
   const image =
     document.createElement("img");
 
-  image.src = poster(
-    movie.poster_path
-  );
+  image.src =
+    poster(movie.poster_path);
 
   image.alt =
-    (movie.title || "영화") +
-    " 포스터";
+    movieTitle + " 포스터";
 
   image.loading = "lazy";
 
   const body =
     document.createElement("div");
 
-  body.className = "movie-body";
+  body.className =
+    "movie-body";
 
   const meta =
     document.createElement("span");
 
-  meta.className = "movie-meta";
+  meta.className =
+    "movie-meta";
 
   meta.textContent =
     year(movie.release_date) +
@@ -170,27 +195,28 @@ function createMovieCardElement(movie) {
     document.createElement("h2");
 
   title.textContent =
-    movie.title ||
-    "제목 정보 없음";
+    movieTitle;
 
-  const overview =
+  const description =
     document.createElement("p");
 
-  overview.textContent =
+  description.textContent =
     movie.overview ||
     "줄거리 정보가 없습니다.";
 
   const action =
     document.createElement("span");
 
-  action.className = "card-link";
+  action.className =
+    "card-link";
+
   action.textContent =
     "상세 정보 보기 →";
 
   body.append(
     meta,
     title,
-    overview,
+    description,
     action
   );
 
