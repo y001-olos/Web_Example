@@ -11,8 +11,20 @@ create table if not exists public.reviews (
   updated_at timestamptz not null default now(),
   unique (user_id, movie_id)
 );
+
 alter table public.reviews enable row level security;
+
+grant usage on schema public to authenticated;
+grant select, insert, update, delete on table public.reviews to authenticated;
+
+drop policy if exists "read own reviews" on public.reviews;
+drop policy if exists "insert own reviews" on public.reviews;
+drop policy if exists "update own reviews" on public.reviews;
+drop policy if exists "delete own reviews" on public.reviews;
+
 create policy "read own reviews" on public.reviews for select using (auth.uid() = user_id);
 create policy "insert own reviews" on public.reviews for insert with check (auth.uid() = user_id);
 create policy "update own reviews" on public.reviews for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
 create policy "delete own reviews" on public.reviews for delete using (auth.uid() = user_id);
+
+notify pgrst, 'reload schema';
